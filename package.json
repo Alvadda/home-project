@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "home-project",
+  "version": "1.0.0",
+  "repository": "https://github.com/Alvadda/home-project.git",
+  "author": "Alvadda <pansch.c@t-online.de>",
+  "license": "MIT",
+  "scripts": {
+    "start:dev": "start:dev"
+  },
+  "workspaces": [
+    "server",
+    "app"
+  ],
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0"
+  }
+}
