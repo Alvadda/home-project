@@ -1,18 +1,20 @@
 {
-  "private": true,
-  "name": "home-project",
-  "version": "1.0.0",
-  "repository": "https://github.com/Alvadda/home-project.git",
-  "author": "Alvadda <pansch.c@t-online.de>",
-  "license": "MIT",
-  "scripts": {
-    "start:dev": "start:dev"
-  },
-  "workspaces": [
-    "server",
-    "app"
-  ],
-  "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0"
-  }
+    "name": "home-project",
+    "private": true,
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "prettier": "^3.0.0",
+        "turbo": "latest"
+    },
+    "packageManager": "yarn@1.22.19"
 }

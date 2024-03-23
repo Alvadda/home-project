@@ -1,2 +1,48 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
 node_modules
+
+# testing
+coverage
+
+# build
 dist
+
+# Database
+*.db
+*.db-journal
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# packages/database
+packages/database/.env
+packages/database/dist
+packages/database/prisma/dev.db
+
+# apps/discord-bot
+apps/discord-bot/dist
+
+# apps/web
+apps/web/.next
+
+
+# turbo
+.turbo
+
+# vercel
+.vercel
