@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common'
 
 import { PrismaModule } from '@/prisma/prisma.module'
 
-import { AppTrackerModule } from './app-tracker/app-tracker.module'
+import { ApplicationModule } from './application/application.module'
 
 @Module({
-  imports: [PrismaModule, AppTrackerModule],
+  imports: [PrismaModule, ApplicationModule],
   controllers: [],
   providers: [],
 })

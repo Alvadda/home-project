@@ -23,7 +23,9 @@ model AppTracking {
 
 model TrackedApplications {
   id       Int                @id @default(autoincrement())
-  name     String
+  processName     String
+  titleDetail     String?
+  color           String
   sessions AppUsageSessions[]
 }
 
@@ -32,7 +34,6 @@ model AppUsageSessions {
   applicationId Int
   startTime     DateTime
   endTime       DateTime
+  duration      Int
   application   TrackedApplications @relation(fields: [applicationId], references: [id])
-
-  @@map("AppUsageSessions")
 }
