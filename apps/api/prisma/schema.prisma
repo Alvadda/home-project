@@ -14,10 +14,25 @@ datasource db {
 }
 
 model AppTracking {
-  id Int @id @default(autoincrement())
-  name String
+  id        Int      @id @default(autoincrement())
+  name      String
   startDate DateTime
-  endDate DateTime
-  duration Int
+  endDate   DateTime
+  duration  Int
 }
 
+model TrackedApplications {
+  id       Int                @id @default(autoincrement())
+  name     String
+  sessions AppUsageSessions[]
+}
+
+model AppUsageSessions {
+  id            Int                 @id @default(autoincrement())
+  applicationId Int
+  startTime     DateTime
+  endTime       DateTime
+  application   TrackedApplications @relation(fields: [applicationId], references: [id])
+
+  @@map("AppUsageSessions")
+}
