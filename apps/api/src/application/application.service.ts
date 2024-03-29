@@ -8,7 +8,11 @@ export class ApplicationService {
   constructor(private prisma: PrismaService) {}
 
   async createTrackingApp(data: Prisma.TrackedApplicationsCreateInput) {
-    const appExist = this.prisma.trackedApplications.findFirst({ where: { processName: data.processName, titleDetail: data.titleDetail } })
+    const appExist = await this.prisma.trackedApplications.findFirst({
+      where: { processName: data.processName, titleDetail: data.titleDetail },
+    })
+    console.log(appExist)
+
     if (appExist) throw new HttpException('Application already exist', HttpStatus.CONFLICT)
 
     return this.prisma.trackedApplications.create({
