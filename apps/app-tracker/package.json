@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node -r ts-node/register --env-file=.env.development.local ./src/tracker.ts"
+    "dev": "node -r ts-node/register --env-file=.env.development.local ./src/tracker.ts",
+    "start": "node -r ts-node/register --env-file=.env ./src/tracker.ts",
+    "cli": "node ./cli.mjs"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^20.11.28",
+    "inquirer": "^9.2.16",
     "prettier": "^3.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
