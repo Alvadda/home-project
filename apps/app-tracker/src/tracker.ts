@@ -3,6 +3,8 @@ import activeWin from 'active-win'
 import { getApplications } from './api/getApplications'
 import { postSession } from './api/postSession'
 import { Application } from './types'
+import { Cache } from './util/cache'
+import { Logger } from './util/logger'
 
 type ActiveWindow = NonNullable<Awaited<ReturnType<typeof activeWin>>>
 
@@ -11,10 +13,18 @@ type CurrentTrackedApp = {
   applicationId: number
 }
 
+const cache = new Cache<number | undefined>()
+const logger = new Logger()
+
 let currentTrackedApp: CurrentTrackedApp | undefined
 
 const getApplicationId = (window: ActiveWindow, apps: Application[]) => {
-  return apps.find((app) => {
+  const uniqKey = `${window.owner.name}/${window.title}`
+
+  const fromCache = cache.get(uniqKey)
+  if (fromCache) return fromCache
+
+  const appId = apps.find((app) => {
     const trackableApp = app.processName === window.owner.name
 
     if (!trackableApp) return false
@@ -23,10 +33,13 @@ const getApplicationId = (window: ActiveWindow, apps: Application[]) => {
 
     return window.title.includes(app.titleDetail)
   })?.id
+
+  cache.set({ key: uniqKey, value: appId })
+  return appId
 }
 
 const startNewTracking = (appId: number) => {
-  console.log('Start Tracking: ', appId)
+  logger.log('Start Tracking: ', appId)
   currentTrackedApp = {
     applicationId: appId,
     startTime: new Date(),
@@ -36,7 +49,7 @@ const startNewTracking = (appId: number) => {
 const stopTracking = async () => {
   if (!currentTrackedApp) return
 
-  console.log('Stop Tracking: ', currentTrackedApp.applicationId)
+  logger.log('Stop Tracking: ', currentTrackedApp.applicationId)
 
   await postSession(currentTrackedApp.applicationId, { startTime: currentTrackedApp.startTime, endTime: new Date() })
   currentTrackedApp = undefined
@@ -45,7 +58,7 @@ const stopTracking = async () => {
 const init = async () => {
   const appsToTrack = await getApplications()
 
-  console.log('Start Tracker for: ', appsToTrack)
+  logger.log('Start Tracker for: ', appsToTrack)
 
   const track = async () => {
     const window = await activeWin()
@@ -63,7 +76,7 @@ const init = async () => {
     startNewTracking(appId)
   }
 
-  setInterval(track, 5000)
+  setInterval(track, 1000)
 }
 
 init()
