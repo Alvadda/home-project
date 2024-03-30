@@ -27,7 +27,7 @@ const runCLI = async () => {
       name: 'selectedWindow',
       message: 'Select a window to track:',
       choices: openWindows.map((item) => ({
-        name: item.processName,
+        name: `${item.processName} - ${item.title}`,
         value: item,
       })),
     },

@@ -23,7 +23,7 @@ export class SessionsService {
     return applicationExist
   }
 
-  private groupBySessionsByApplication(sessions: SessionWithApplication[]) {
+  private groupSessionsByApplication(sessions: SessionWithApplication[]) {
     return sessions.reduce((acc, session) => {
       const application = session.application
 
@@ -70,6 +70,6 @@ export class SessionsService {
       include: { application: true },
     })
 
-    return this.groupBySessionsByApplication(sessions)
+    return this.groupSessionsByApplication(sessions)
   }
 }
