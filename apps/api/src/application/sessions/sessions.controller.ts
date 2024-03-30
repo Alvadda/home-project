@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common'
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
 
-import { CreateSession, SessionPeriod, SessionRo } from './dto/sessions.dto'
+import { CreateSession, SessionPeriod, SessionPeriodRo, SessionRo } from './dto/sessions.dto'
 import { SessionsService } from './sessions.service'
 
 @ApiTags('Application/Sessions')
@@ -30,7 +30,7 @@ export class SessionsController {
   @Get('sessions/period')
   @ApiResponse({
     status: 200,
-    type: [SessionRo],
+    type: [SessionPeriodRo],
   })
   getSessionsForPeriod(@Query() query: SessionPeriod) {
     return this.sessionsService.getSessionsForPeriod(query.startDate, query.endDate)

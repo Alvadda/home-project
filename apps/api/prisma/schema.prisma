@@ -13,14 +13,6 @@ datasource db {
   url      = "file:./home-project.db"
 }
 
-model AppTracking {
-  id        Int      @id @default(autoincrement())
-  name      String
-  startDate DateTime
-  endDate   DateTime
-  duration  Int
-}
-
 model TrackedApplications {
   id       Int                @id @default(autoincrement())
   processName     String

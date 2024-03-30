@@ -1,8 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { AppUsageSessions, Prisma, TrackedApplications } from '@prisma/client'
 import { differenceInSeconds } from 'date-fns'
 
 import { PrismaService } from '@/prisma/prisma.service'
+
+type SessionWithApplication = AppUsageSessions & {
+  application: TrackedApplications
+}
+
+type ApplicationWithSessions = TrackedApplications & {
+  sessions: SessionWithApplication[]
+}
 
 @Injectable()
 export class SessionsService {
@@ -13,6 +21,22 @@ export class SessionsService {
     if (!applicationExist) throw new HttpException('Application not found', HttpStatus.NOT_FOUND)
 
     return applicationExist
+  }
+
+  private groupBySessionsByApplication(sessions: SessionWithApplication[]) {
+    return sessions.reduce((acc, session) => {
+      const application = session.application
+
+      const exist = acc.findIndex((a) => a.id === application.id)
+
+      if (exist !== -1) {
+        acc[exist].sessions.push(session)
+        return acc
+      }
+
+      acc.push({ ...application, sessions: [session] })
+      return acc
+    }, [] as ApplicationWithSessions[])
   }
 
   async createAppSession(appId: number, data: Omit<Prisma.AppUsageSessionsCreateWithoutApplicationInput, 'duration'>) {
@@ -36,13 +60,16 @@ export class SessionsService {
   }
 
   async getSessionsForPeriod(startDate: Date, endDate: Date) {
-    return this.prisma.appUsageSessions.findMany({
+    const sessions = await this.prisma.appUsageSessions.findMany({
       where: {
         endTime: {
           lte: endDate,
           gte: startDate,
         },
       },
+      include: { application: true },
     })
+
+    return this.groupBySessionsByApplication(sessions)
   }
 }

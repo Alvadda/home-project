@@ -1,6 +1,8 @@
 import { Transform } from 'class-transformer'
 import { IsDate, IsNotEmpty } from 'class-validator'
 
+import { ApplicationRo } from '@/application/dto/application.dto'
+
 export class CreateSession {
   @Transform(({ value }) => new Date(value), { toClassOnly: true })
   @IsDate()
@@ -29,4 +31,8 @@ export class SessionPeriod {
   @IsDate()
   @IsNotEmpty()
   endDate: Date
+}
+
+export class SessionPeriodRo extends ApplicationRo {
+  sessions: SessionRo[]
 }
