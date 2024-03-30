@@ -18,3 +18,15 @@ export class SessionRo extends CreateSession {
   applicationId: number
   duration: number
 }
+
+export class SessionPeriod {
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
+  @IsDate()
+  @IsNotEmpty()
+  startDate: Date
+
+  @Transform(({ value }) => new Date(value), { toClassOnly: true })
+  @IsDate()
+  @IsNotEmpty()
+  endDate: Date
+}

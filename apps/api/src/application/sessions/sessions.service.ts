@@ -34,4 +34,15 @@ export class SessionsService {
 
     return this.prisma.appUsageSessions.findMany({ where: { applicationId: appId } })
   }
+
+  async getSessionsForPeriod(startDate: Date, endDate: Date) {
+    return this.prisma.appUsageSessions.findMany({
+      where: {
+        endTime: {
+          lte: endDate,
+          gte: startDate,
+        },
+      },
+    })
+  }
 }
